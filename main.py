@@ -28,6 +28,8 @@ PIECE_UNICODE = {
     'p': '♟', 'n': '♞', 'b': '♝', 'r': '♜', 'q': '♛', 'k': '♚'
 }
 
+
+
 # Carregar imagens das peças
 PIECE_IMAGES = {}
 PIECE_IMAGES['b'] = pygame.image.load(os.path.join('assets', 'pieces', 'bB.png'))
@@ -44,8 +46,16 @@ PIECE_IMAGES['p'] = pygame.image.load(os.path.join('assets', 'pieces', 'bP.png')
 PIECE_IMAGES['p'] = pygame.transform.smoothscale(PIECE_IMAGES['p'], (SQ_SIZE, SQ_SIZE))
 PIECE_IMAGES['B'] = pygame.image.load(os.path.join('assets', 'pieces', 'wB.png'))
 PIECE_IMAGES['B'] = pygame.transform.smoothscale(PIECE_IMAGES['B'], (SQ_SIZE, SQ_SIZE))
-PIECE_IMAGES['K'] = pygame.image.load(os.path.join('assets', 'pieces', 'wK.png'))
+PIECE_IMAGES['K'] = pygame.image.load(os.path.join('assets', 'pieces', 'wK.png')).convert_alpha()
 PIECE_IMAGES['K'] = pygame.transform.smoothscale(PIECE_IMAGES['K'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['N'] = pygame.image.load(os.path.join('assets', 'pieces', 'wN.png'))
+PIECE_IMAGES['N'] = pygame.transform.smoothscale(PIECE_IMAGES['N'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['P'] = pygame.image.load(os.path.join('assets', 'pieces', 'wP.png'))
+PIECE_IMAGES['P'] = pygame.transform.smoothscale(PIECE_IMAGES['P'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['Q'] = pygame.image.load(os.path.join('assets', 'pieces', 'wQ.png'))
+PIECE_IMAGES['Q'] = pygame.transform.smoothscale(PIECE_IMAGES['Q'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['R'] = pygame.image.load(os.path.join('assets', 'pieces', 'wR.png'))
+PIECE_IMAGES['R'] = pygame.transform.smoothscale(PIECE_IMAGES['R'], (SQ_SIZE, SQ_SIZE))
 
 # Função para desenhar o tabuleiro
 def draw_board(win):
