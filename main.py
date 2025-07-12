@@ -5,6 +5,7 @@ import pygame
 from chess_assets import load_all_piece_images
 from chess_draw import draw_board, draw_pieces
 from chess_events import handle_mouse_event
+import openai
 
 # Configurações iniciais
 load_dotenv()
@@ -38,6 +39,9 @@ FONT = pygame.font.SysFont('arial', SQ_SIZE // 2)
 selected_square = None
 moving_piece = None
 
+# Inicializa o cliente OpenAI
+client = openai.OpenAI(api_key=API_KEY)
+
 def get_status_message(board):
     if board.is_checkmate():
         return "Xeque-mate!"
@@ -51,6 +55,35 @@ def get_status_message(board):
         return "Fim de jogo!"
     else:
         return "Seu turno" if board.turn else "Turno da IA"
+
+def ia_get_move(board):
+    """
+    Envia o contexto atual do tabuleiro para a IA e retorna o movimento sugerido.
+    """
+    fen = board.fen()
+    prompt = (
+        "Você é um jogador de xadrez. A posição atual em FEN é: "
+        f"{fen}. Qual o melhor movimento para as pretas? Responda apenas o movimento em notação UCI (exemplo: e2e4). Não use notação SAN."
+    )
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        move_str = response.choices[0].message.content.strip()
+        # Verifica se é notação UCI (4 ou 5 caracteres)
+        if len(move_str) in [4, 5]:
+            return move_str
+        # Tenta converter SAN para UCI
+        try:
+            move = board.parse_san(move_str)
+            return move.uci()
+        except Exception:
+            print(f"Resposta da IA não reconhecida: {move_str}")
+            return None
+    except Exception as e:
+        print(f"Erro na IA: {e}")
+        return None
 
 # Loop principal
 running = True
@@ -66,6 +99,22 @@ while running:
     status = get_status_message(board)
     status_text = FONT.render(status, True, (0, 0, 0))
     WIN.blit(status_text, (10, 10))
+
+    # Passo 1: Verifica se é a vez da IA e o jogo não acabou
+    if not board.turn and not board.is_game_over():
+        move_uci = ia_get_move(board)
+        if move_uci:
+            try:
+                move = chess.Move.from_uci(move_uci)
+                if move in board.legal_moves:
+                    board.push(move)
+                else:
+                    print(f"Movimento ilegal sugerido pela IA: {move_uci}")
+            except Exception:
+                print(f"Movimento inválido sugerido pela IA: {move_uci}")
+        else:
+            print("A IA não retornou um movimento válido.")
+
     pygame.display.flip()
 
 pygame.quit()
