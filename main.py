@@ -65,7 +65,7 @@ def ia_get_move(board):
     )
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}]
         )
         move_str = response.choices[0].message.content.strip()
