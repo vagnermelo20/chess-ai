@@ -10,7 +10,6 @@ import openai
 # Configurações iniciais
 load_dotenv()
 API_KEY = os.getenv('OPENAI_API_KEY')
-print(f'Sua API KEY é: {API_KEY}')
 
 # Inicializa o tabuleiro de xadrez
 board = chess.Board()
@@ -57,9 +56,7 @@ def get_status_message(board):
         return "Seu turno" if board.turn else "Turno da IA"
 
 def ia_get_move(board):
-    """
-    Envia o contexto atual do tabuleiro para a IA e retorna o movimento sugerido.
-    """
+
     fen = board.fen()
     prompt = (
         "Você é um jogador de xadrez. A posição atual em FEN é: "
@@ -74,7 +71,7 @@ def ia_get_move(board):
         # Verifica se é notação UCI (4 ou 5 caracteres)
         if len(move_str) in [4, 5]:
             return move_str
-        # Tenta converter SAN para UCI
+        # Converte SAN para UCI se necessário
         try:
             move = board.parse_san(move_str)
             return move.uci()
@@ -100,7 +97,7 @@ while running:
     status_text = FONT.render(status, True, (0, 0, 0))
     WIN.blit(status_text, (10, 10))
 
-    # Passo 1: Verifica se é a vez da IA e o jogo não acabou
+    # Verificar com a vez da IA e o jogo não acabou
     if not board.turn and not board.is_game_over():
         move_uci = ia_get_move(board)
         if move_uci:
