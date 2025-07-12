@@ -5,7 +5,7 @@ import pygame
 
 # Configurações iniciais
 load_dotenv()
-API_KEY = os.getenv('API_KEY')
+API_KEY = os.getenv('OPENAI_API_KEY')
 print(f'Sua API KEY é: {API_KEY}')
 
 # Inicializa o tabuleiro de xadrez
@@ -42,6 +42,10 @@ PIECE_IMAGES['r'] = pygame.image.load(os.path.join('assets', 'pieces', 'bR.png')
 PIECE_IMAGES['r'] = pygame.transform.smoothscale(PIECE_IMAGES['r'], (SQ_SIZE, SQ_SIZE))
 PIECE_IMAGES['p'] = pygame.image.load(os.path.join('assets', 'pieces', 'bP.png'))
 PIECE_IMAGES['p'] = pygame.transform.smoothscale(PIECE_IMAGES['p'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['B'] = pygame.image.load(os.path.join('assets', 'pieces', 'wB.png'))
+PIECE_IMAGES['B'] = pygame.transform.smoothscale(PIECE_IMAGES['B'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['K'] = pygame.image.load(os.path.join('assets', 'pieces', 'wK.png'))
+PIECE_IMAGES['K'] = pygame.transform.smoothscale(PIECE_IMAGES['K'], (SQ_SIZE, SQ_SIZE))
 
 # Função para desenhar o tabuleiro
 def draw_board(win):
