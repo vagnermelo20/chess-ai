@@ -16,4 +16,4 @@ Jogo de xadrez com IA integrado. Você joga como branco e a IA responde como pre
    ```
    python main.py
    ```
-4. Clique nas peça que tu quer mover e no lugar que ela será movida. A IA fará o lance das pretas automaticamente.
+4. Carregue a peça que tu quer mover até o lugar que ela será movida e a solte. A IA fará o lance das pretas automaticamente.
