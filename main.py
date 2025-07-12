@@ -28,6 +28,21 @@ PIECE_UNICODE = {
     'p': '♟', 'n': '♞', 'b': '♝', 'r': '♜', 'q': '♛', 'k': '♚'
 }
 
+# Carregar imagens das peças
+PIECE_IMAGES = {}
+PIECE_IMAGES['b'] = pygame.image.load(os.path.join('assets', 'pieces', 'bB.png'))
+PIECE_IMAGES['b'] = pygame.transform.smoothscale(PIECE_IMAGES['b'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['k'] = pygame.image.load(os.path.join('assets', 'pieces', 'bK.png'))
+PIECE_IMAGES['k'] = pygame.transform.smoothscale(PIECE_IMAGES['k'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['n'] = pygame.image.load(os.path.join('assets', 'pieces', 'bN.png'))
+PIECE_IMAGES['n'] = pygame.transform.smoothscale(PIECE_IMAGES['n'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['q'] = pygame.image.load(os.path.join('assets', 'pieces', 'bQ.png'))
+PIECE_IMAGES['q'] = pygame.transform.smoothscale(PIECE_IMAGES['q'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['r'] = pygame.image.load(os.path.join('assets', 'pieces', 'bR.png'))
+PIECE_IMAGES['r'] = pygame.transform.smoothscale(PIECE_IMAGES['r'], (SQ_SIZE, SQ_SIZE))
+PIECE_IMAGES['p'] = pygame.image.load(os.path.join('assets', 'pieces', 'bP.png'))
+PIECE_IMAGES['p'] = pygame.transform.smoothscale(PIECE_IMAGES['p'], (SQ_SIZE, SQ_SIZE))
+
 # Função para desenhar o tabuleiro
 def draw_board(win):
     for row in range(8):
@@ -43,10 +58,13 @@ def draw_pieces(win, board):
         if piece:
             col = chess.square_file(square)
             row = 7 - chess.square_rank(square)
-            symbol = PIECE_UNICODE[piece.symbol()]
-            text = FONT.render(symbol, True, (0, 0, 0))
-            text_rect = text.get_rect(center=(col*SQ_SIZE + SQ_SIZE//2, row*SQ_SIZE + SQ_SIZE//2))
-            win.blit(text, text_rect)
+            symbol = piece.symbol()
+            if symbol in PIECE_IMAGES:
+                win.blit(PIECE_IMAGES[symbol], (col*SQ_SIZE, row*SQ_SIZE))
+            else:
+                text = FONT.render(PIECE_UNICODE[symbol], True, (0, 0, 0))
+                text_rect = text.get_rect(center=(col*SQ_SIZE + SQ_SIZE//2, row*SQ_SIZE + SQ_SIZE//2))
+                win.blit(text, text_rect)
 
 selected_square = None
 moving_piece = None
