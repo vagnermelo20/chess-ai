@@ -18,7 +18,8 @@ board = chess.Board()
 pygame.init()
 SIZE = 640  # Tamanho da janela
 SQ_SIZE = SIZE // 8  # Tamanho de cada casa
-WIN = pygame.display.set_mode((SIZE, SIZE))
+INFO_HEIGHT = SQ_SIZE  # Altura extra para a mensagem
+WIN = pygame.display.set_mode((SIZE, SIZE + INFO_HEIGHT))
 pygame.display.set_caption('Chess AI')
 
 # Cores
@@ -64,7 +65,7 @@ def ia_get_move(board):
     )
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}]
         )
         move_str = response.choices[0].message.content.strip()
@@ -90,12 +91,16 @@ while running:
             running = False
         else:
             selected_square, moving_piece = handle_mouse_event(event, board, selected_square, moving_piece, SQ_SIZE)
+    # Limpa a tela
+    WIN.fill((255, 255, 255))
+    # Desenha o tabuleiro e peças
     draw_board(WIN, SQ_SIZE)
     draw_pieces(WIN, board, PIECE_IMAGES, FONT, SQ_SIZE, PIECE_UNICODE)
-    # Exibe mensagem de status
+    # Exibe mensagem de status ABAIXO do tabuleiro
     status = get_status_message(board)
     status_text = FONT.render(status, True, (0, 0, 0))
-    WIN.blit(status_text, (10, 10))
+    text_rect = status_text.get_rect(center=(SIZE // 2, SIZE + INFO_HEIGHT // 2))
+    WIN.blit(status_text, text_rect)
 
     # Verificar com a vez da IA e o jogo não acabou
     if not board.turn and not board.is_game_over():
